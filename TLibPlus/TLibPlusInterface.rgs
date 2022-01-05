@@ -1,0 +1,26 @@
+HKCR
+{
+	tp.plus = s 'TLibPlusInterface class'
+	{
+		CLSID = s '{80b31569-7a7b-4bc1-b379-4c5e5f27d339}'
+	}
+	TLibPlusInterface.plus = s 'TLibPlusInterface class'
+	{		
+		CurVer = s 'tp.plus'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {80b31569-7a7b-4bc1-b379-4c5e5f27d339} = s 'TLibPlusInterface class'
+		{
+			ProgID = s 'tp.plus'
+			VersionIndependentProgID = s 'tp.plus'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{f260a0ab-b8e5-42b4-9a6d-14df287e49f3}'
+			Version = s '1.0'
+		}
+	}
+}

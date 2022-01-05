@@ -1,0 +1,448 @@
+﻿// TLibPlus.idl: TLibPlus 的 IDL 来源
+//
+
+// 这个档案会由 MIDL 工具处理
+// 产生型别程式库 (TLibPlus.tlb) 与封送处理程式码。
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(b4a55b6f-59e3-4d0d-bc48-2995e66d93da),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface ITLibPlusInterface : IDispatch
+{
+#pragma region 中文
+#pragma region 系统
+	[id(1), helpstring("版本")] HRESULT 版本([out, retval] BSTR* 版本号);
+	[id(2), helpstring("输入框")] HRESULT 输入框([in] LONG 窗口句柄, [in] LONG 颜色, [in] BSTR 标题, [in] BSTR 显示文本, [in] BSTR 预设文本, [out, retval] BSTR* 内容);
+	[id(3), helpstring("扫描调试器")] HRESULT 扫描调试器([out, retval] LONG* nret);
+	[id(4), helpstring("反向量化异常处理")] HRESULT 反向量化异常处理初始化([out, retval] LONG* nret);
+	[id(5), helpstring("异常回调初始化")] HRESULT 异常回调初始化([in] LONG 窗口句柄, [in] LONG 是否自动抛出, [out, retval] LONG* nret);
+	[id(6), helpstring("获取最后异常信息")] HRESULT 获取最后异常信息([out, retval] BSTR* 异常类型);
+	[id(7), helpstring("延时")] HRESULT 延时([in] ULONG 毫秒, [in] LONG 是否阻塞, [out, retval] LONG* nret);
+	[id(8), helpstring("退出")] HRESULT 退出([in] BSTR 资源目录, [out, retval] LONG* nret);
+	//其他
+	[id(9), helpstring("类型占字节")] HRESULT 取类型大小([in] BSTR 变量类型字符串, [out, retval] LONG* nret);              //获取指定变量类型所佔字节大小
+#pragma endregion
+
+#pragma region 内存
+	[id(101), helpstring("进程提权")] HRESULT 进程提权([in] BSTR 权限标识字符串, [out, retval] LONG* nret);//提升当前线程权限
+	[id(102), helpstring("清理内存")] HRESULT 清理内存([in] LONG 窗口句柄, [out, retval] LONG* nret);                  //根据窗口句柄释放虚拟内存
+	
+	[id(103), helpstring("汇編加入")] HRESULT 汇编加入([in] BSTR 字符串汇编代码, [out, retval] LONG* nret);
+	[id(104), helpstring("汇編注入")] HRESULT 汇编注入([in] LONG 窗口句柄, [in] LONG 注入模式, [in] LONG 超时毫秒, [out, retval] LONG* nret);
+	[id(105), helpstring("汇編清空")] HRESULT 汇编清空([out, retval] LONG* nret);
+	[id(106), helpstring("汇編轉16進制")] HRESULT 汇编转十六进制机器码([in] LONG 十进制存放地址, [out, retval] BSTR* retstring);
+	[id(107), helpstring("16進制轉汇編")] HRESULT 十六进制机器码转汇编([in] BSTR 字符串汇编代码, [in] LONG 十进制存放地址, [out, retval] BSTR* retstring);
+	
+	[id(110), helpstring("内存取十进制地址")] HRESULT 内存字符串取十进制地址([in] LONG 窗口句柄, [in] BSTR 字符串地址, [in, out] VARIANT* 接收超長整形指針, [out, retval] LONG* dwret);     //32位元字符串地址(+偏移) 转十进制整数 如 [[<xx.exe+1234>+15]+18]+2A
+	[id(111), helpstring("内存遍历读整数")] HRESULT 内存遍历读整数([in] LONG 窗口句柄, [in] LONGLONG 十进制地址, [in] LONGLONG 十进制偏移增量, [in] LONG 次数, [in] LONG 读取类型, [out, retval] BSTR* retstring);
+	[id(112), helpstring("內存讀取整數")] HRESULT 内存读整数([in] LONG 窗口句柄, [in] LONGLONG 十进制地址, [in] LONG 读取类型, [out, retval] LONGLONG* nret);
+	[id(113), helpstring("內存讀取DATA")] HRESULT 内存读十六进制数据([in] LONG 窗口句柄, [in] LONGLONG 十进制地址, [in] LONG 长度, [out, retval] BSTR* retstring);
+
+
+	[id(114), helpstring("內存寫入整數")] HRESULT 内存写整数([in] LONG 窗口句柄, [in] LONGLONG 十进制地址, [in] LONG 写入类型, [in] LONGLONG 写入数值, [out, retval] LONG* nret);
+	[id(115), helpstring("内存写十六进制数据")] HRESULT 内存写十六进制数据([in] LONG 窗口句柄, [in] LONGLONG 十进制地址, [in] BSTR 十六进制字符串字节集, [out, retval] LONG* nret);
+
+	[id(120), helpstring("内存填充")] HRESULT 内存填充([in] VARIANT* 目标地址, [in] LONG 填充数值, [in] LONG 大小, [out, retval] LONG* nret);       //初始化并填充指定内存 与C++ memset宏完全相同
+	[id(121), helpstring("内存複製")] HRESULT 内存複製([in] VARIANT* 目标地址, [in] VARIANT* 来源地址, [in] LONG 大小, [out, retval] LONG* nret);      //将指定大小字节_Src内存内容複製给_Dst 与C++ memcpy宏完全相同
+	[id(122), helpstring("内存申请空间")] HRESULT 内存申请空间([in] BSTR 类型字符串, [in] LONG 大小, [out, retval] VARIANT* nret);               //动态分配内存空间  size 大于0为变量数组   可以是堆，也可以是静态存储区
+	[id(123), helpstring("内存申请堆")] HRESULT 内存申请堆([in] BSTR 类型字符串, [in] LONG 大小, [out, retval] VARIANT* nret);            //从堆上动态分配内存
+	[id(124), helpstring("内存释放空间")] HRESULT 内存释放空间([in, out] VARIANT* 指针, [out, retval] LONG* nret);                         //释放new出来的内存指针
+	[id(125), helpstring("内存数组释放空间")] HRESULT 内存数组释放空间([in, out] VARIANT* 指针, [out, retval] LONG* nret);                        //释放new出来的数组内存指针
+	[id(126), helpstring("内存堆释放")] HRESULT 内存堆释放([in, out]VARIANT* 指针, [out, retval] LONG* nret);                           //释放malloc内存指针
+	[id(127), helpstring("指针写")] HRESULT 指针写([in] VARIANT* 内存指针, [in] BSTR 类型, [in] VARIANT* 写入数值, [out, retval] LONG* nret);
+	[id(128), helpstring("指针读")] HRESULT 指针读([in] VARIANT* 内存指针, [in] BSTR 类型, [out, retval] VARIANT* nret);
+#pragma endregion
+
+#pragma region 计算
+	[id(201), helpstring("随机数")] HRESULT 随机数([in] LONG 最小值, [in] LONG 最大值, [out, retval] LONG* nret);                      //指定范围的真随机数  C++ <radom> 
+	[id(202), helpstring("随机浮点数")] HRESULT 随机浮点数([in] DOUBLE 浮点数_最小值, [in] DOUBLE 浮点数_最大值, [out, retval] DOUBLE* dret); //指定范围的双精度浮点数随机数  C++ <radom> 
+	[id(203), helpstring("位右移")] HRESULT 位右移([in] LONG 数值, [in] LONG 移动量, [out, retval] LONG* nret);               //位右移
+	[id(204), helpstring("位左移")] HRESULT 位左移([in] LONG 数值, [in] LONG 移动量, [out, retval] LONG* nret);                //位左移
+	[id(205), helpstring("位与")] HRESULT 位与([in] BSTR 格式字符串, [out, retval] LONG* nret);                               //位与 (&)
+	[id(206), helpstring("位或")] HRESULT 位或([in] BSTR 格式字符串, [out, retval] LONG* nret);                                //位或 (|)
+	[id(207), helpstring("位异或")] HRESULT 位异或([in] BSTR 格式字符串, [out, retval] LONG* nret);                               //异或 (|)
+	[id(208), helpstring("位反")] HRESULT 位反([in] LONG 数值, [out, retval] LONG* nret);                                   //位反 (~)
+	[id(209), helpstring("圆周率")] HRESULT 圆周率([out, retval] DOUBLE* dret);                                        //返回一个PI常量的DOUBLE指
+	[id(210), helpstring("反余弦")] HRESULT 反余弦([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回反余弦数字
+	[id(211), helpstring("反双曲余弦")] HRESULT 反双曲余弦([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回数字的双曲余弦值
+	[id(212), helpstring("反正弦")] HRESULT 反正弦([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回反正弦值
+	[id(213), helpstring("反双曲正弦")] HRESULT 反双曲正弦([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回数字的双曲正弦值
+	[id(214), helpstring("反正切")] HRESULT 反正切([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回反正切数字
+	[id(215), helpstring("坐标反正切")] HRESULT 坐标反正切([in] DOUBLE _Y, [in] DOUBLE _X, [out, retval] DOUBLE* dret);               //返回坐标的反正切
+	[id(216), helpstring("弧双曲正切")] HRESULT 弧双曲正切([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回数字的弧双曲正切
+	[id(217), helpstring("立方根")] HRESULT 立方根([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //计算数字的立方根
+	[id(218), helpstring("上限值")] HRESULT 浮点数上限值([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回数字的上限值
+	[id(219), helpstring("以y符返x")] HRESULT 以y符返x([in] DOUBLE _Number, [in] DOUBLE _Sign, [out, retval] DOUBLE* dret);  //以y的符号返回x的大小
+	[id(220), helpstring("余弦")] HRESULT 余弦([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //返回参数的余弦
+	[id(221), helpstring("双曲余弦")] HRESULT 双曲余弦([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回某个角度的双曲余弦值
+
+	[id(222), helpstring("幂指数")] HRESULT 浮点数幂指数([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //计算升为幂x的指数e
+	[id(223), helpstring("幂指数2底")] HRESULT 浮点数幂指数2底([in] DOUBLE _X, [out, retval] DOUBLE * dret);                           //计算x的以2为底的指数
+	[id(224), helpstring("幂指数x减1")] HRESULT 浮点数幂指数x减1([in] DOUBLE _X, [out, retval] DOUBLE * dret);                          //计算出幂乘以x减一的指数
+	[id(225), helpstring("浮点数绝对值")] HRESULT 浮点数绝对值([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回参数的绝对值
+	[id(226), helpstring("xy正差")] HRESULT 浮点数xy正差([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                //返回x和y之间的正差
+	[id(227), helpstring("下限值")] HRESULT 浮点数下限值([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回十进制数字的下限值
+	[id(228), helpstring("x乘以y加z")] HRESULT 浮点数x乘以y加z([in] DOUBLE _X, [in] DOUBLE _Y, [in] DOUBLE _Z, [out, retval] DOUBLE* dret);      //计算表达式x * y + z
+	[id(229), helpstring("两数取最大")] HRESULT 浮点数两数取最大([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                //返回传递的两个参数中最大的
+	[id(230), helpstring("两数取最小")] HRESULT 浮点数两数取最小([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                //返回两个给定参数中的最小值
+	[id(231), helpstring("浮点数余数")] HRESULT 浮点数取余数([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                //计算除法浮点数的余数
+
+	[id(232), helpstring("浮点数尾数指数")] HRESULT 浮点数取尾数与指数([in] DOUBLE _X, [out] VARIANT* _Y, [out, retval] DOUBLE* dret);                 //返回一个浮点数的尾数和指数
+	[id(233), helpstring("平方和的平方根")] HRESULT 浮点数平方和的平方根([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);              //返回参数平方和的平方根
+	[id(234), helpstring("绝对值的对数")] HRESULT 浮点数绝对值对数([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回| x |的对数的整数部分
+	[id(235), helpstring("x和2的乘积返回到幂e")] HRESULT 浮点数x乘以2的e幂([in] DOUBLE _X, [in] LONG _Y, [out, retval] DOUBLE * dret);                  //将x和2的乘积返回到幂e
+	[id(236), helpstring("取对数")] HRESULT 浮点数取对数([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //返回数字的自然对数
+	[id(237), helpstring("取以10为底对数")] HRESULT 浮点数取对数10底([in] DOUBLE _X, [out, retval] DOUBLE * dret);                          //返回数字的以10为底的对数
+	[id(238), helpstring("取以2为底对数")] HRESULT 浮点数取对数2底([in] DOUBLE _X, [out, retval] DOUBLE * dret);                           //计算x的以2为底的对数
+	[id(239), helpstring("绝对值对数")] HRESULT 浮点数取绝对值对数b([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回| x |的对数
+	[id(240), helpstring("x加一对数")] HRESULT 浮点数x加1对数([in] DOUBLE _X, [out, retval] DOUBLE * dret);                          //返回x + 1的自然对数
+	[id(241), helpstring("舍入参数")] HRESULT 浮点数舍入整参数([in] DOUBLE _X, [out, retval] LONG* nret);                             //使用当前舍入模式舍入参数
+	[id(242), helpstring("取最近长整型")] HRESULT 浮点数四捨五入成整数([in] DOUBLE _X, [out, retval] LONG* nret);                            //返回最接近参数的long int值
+
+	[id(243), helpstring("浮点数拆解")] HRESULT 浮点数拆解整数与小数([in] DOUBLE x, [out] VARIANT* intpart, [out, retval] DOUBLE* dret);           //将数字分解为整数和小数部分
+	[id(244), helpstring("取NaN值")] HRESULT 取NaN值([in] BSTR _X, [out, retval] DOUBLE* dret);                       //返回NaN值
+	[id(245), helpstring("参数舍入")] HRESULT 浮点数参数舍入([in] DOUBLE _X, [out, retval] DOUBLE* dret);                      //将参数舍入为使用当前舍入模式
+	[id(246), helpstring("x在y方向上的下一个可表示值")] HRESULT 浮点数下一个表示值([in] DOUBLE _X, DOUBLE _Y, [out, retval] DOUBLE* dret);          //表示x在y方向上的下一个可表示值
+	[id(247), helpstring("求幂")] HRESULT 求幂([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                 //计算幂
+	[id(248), helpstring("求余数")] HRESULT 求余数([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);           //返回x / y的余数
+	[id(249), helpstring("求商")] HRESULT 求商([in] DOUBLE _X, [in] DOUBLE _Y, [out] VARIANT* _Z, [out, retval] DOUBLE* dret);     //计算机余数并存储x / y的商
+	[id(250), helpstring("舍入参数")] HRESULT 浮点数舍入参数([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //使用当前舍入模式舍入参数
+	[id(251), helpstring("取最接近整数")] HRESULT 浮点数四捨五入至最接近整数位([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回最接近参数的整数值
+	[id(252), helpstring("x和FLT_RADX乘以n的乘积")] HRESULT x和FLT_RADX乘以n的乘积长整([in] DOUBLE _X, [in] LONG _Y, [out, retval] DOUBLE* dret);               //计算x和FLT_RADX乘以n的乘积
+	[id(253), helpstring("x和FLT_RADX乘以n的乘积")] HRESULT x和FLT_RADX乘以n的乘积([in] DOUBLE _X, [in] LONG _Y, [out, retval] DOUBLE* dret);                 //计算x和FLT_RADX乘以n的乘积
+	[id(254), helpstring("正弦")] HRESULT 正弦([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //返回参数的正弦
+	[id(255), helpstring("双曲正弦")] HRESULT 双曲正弦([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回某个角度的双曲正弦
+	[id(256), helpstring("平方根")] HRESULT 平方根([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //计算数字的平方根
+	[id(257), helpstring("取切线")] HRESULT 取切线([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //返回参数的切线
+	[id(258), helpstring("取双曲正切")] HRESULT 取双曲正切([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回角度的双曲正切
+	[id(259), helpstring("浮点数符号截断")] HRESULT 浮点数符号截断([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //截断数字的符号部分
+#pragma endregion
+
+#pragma region 数组
+	[id(401), helpstring("数组取最大")] HRESULT 数组整型取最大([in] BSTR 数组字符串, [in] LONG en, [out, retval] LONG* nret);//数组取最大值或包含最大值元素的下标
+	[id(402), helpstring("数组取最小")] HRESULT 数组整型取最小([in] BSTR 数组字符串, [in] LONG en, [out, retval] LONG* nret); //数组取最小值或包含最小值元素的下标
+	[id(403), helpstring("数组整型去重")] HRESULT 数组整型去重([in] BSTR 数组字符串, [out, retval] BSTR* retstring);                //整数数组去重(必须为完全整数数组)
+	[id(404), helpstring("数组字符串去重")] HRESULT 数组去重([in] BSTR 数组字符串, [out, retval] BSTR* retstring);                //字符串数组去重(必须为完全字符串数组)
+	[id(405), helpstring("数组整数排序")] HRESULT 数组整型排序([in] BSTR 数组字符串, [in] LONG en, [out, retval] BSTR* retstring);  //整数数组排序(必须为完全整数数组)
+	[id(406), helpstring("数组字符串排序")] HRESULT 数组排序([in] BSTR 数组字符串, [out, retval] BSTR* retstring);                  //字符串数组排序 根据ASCII 由小到大排列 (必须为完全字符串数组)
+	[id(407), helpstring("数组过滤")] HRESULT 数组过滤([in] BSTR 数组字符串, [in] BSTR str, [out, retval] BSTR* retstring);    //字符串数组过滤 过滤掉包含指定字符串的元素 返回新的数组
+	[id(408), helpstring("数组初始化")] HRESULT 数组多维初始化([in] LONG 维数, [in] BSTR 大小, [out, retval] BSTR* retstring);       //初始化多维数组并填充 null (目前最多3维数组不限制大小)
+	[id(409), helpstring("数组倒序")] HRESULT 数组倒序([in] BSTR 数组字符串, [out, retval] BSTR* retstring);              
+	[id(410), helpstring("数组旋转")] HRESULT 数组旋转([in] BSTR 数组字符串, [in] LONG 移动量, [in] LONG 是否向右, [out, retval] BSTR* retstring);
+	[id(411), helpstring("数组移位")] HRESULT 数组移位([in] BSTR 数组字符串, [in] LONG 移动量, [in] LONG 是否向右, [out, retval] BSTR* retstring);
+#pragma endregion
+	
+#pragma region 字符串
+	[id(501), helpstring("字符串分割")] HRESULT 字符串分割([in] BSTR 字符串内容, [in] BSTR 分隔符, [out] VARIANT* 返回数量, [out, retval] BSTR* outs);                   //字符串分割 引用返回数组 返回数组大小
+	[id(502), helpstring("字符串排序")] HRESULT 字符串排序([in] BSTR 字符串内容, [out, retval] BSTR* retstring);                     //字符串排序
+	[id(503), helpstring("字符串洗牌")] HRESULT 字符串洗牌([in] BSTR 字符串内容, [out, retval] BSTR* retstring);                  //字符串洗牌
+	[id(504), helpstring("字符串去重")] HRESULT 字符串去重([in] BSTR 字符串内容, [out, retval] BSTR* retstring);                   //字符串去重
+	[id(505), helpstring("字符串倒序")] HRESULT 字符串倒序([in] BSTR 字符串内容, [out, retval] BSTR* retstring);
+	[id(506), helpstring("字符串旋转")] HRESULT 字符串旋转([in] BSTR 字符串内容, [in] LONG 移动量, [in] LONG 是否向右, [out, retval] BSTR* retstring);
+	[id(507), helpstring("字符串移位")] HRESULT 字符串移位([in] BSTR 字符串内容, [in] LONG 移动量, [in] LONG 是否向右, [out, retval] BSTR* retstring);
+	[id(508), helpstring("xml转json")] HRESULT 字符串Xml转Json([in] BSTR 字符串内容, [out, retval] BSTR* retstring);         //xml字符串转json字符串
+	[id(509), helpstring("json转xml")] HRESULT 字符串Json转Xml([in] BSTR 字符串内容, [out, retval] BSTR* retstring);         //json字符串转xml字符串
+#pragma endregion
+
+#pragma region 文件
+	[id(601), helpstring("文件指针打开")] HRESULT 文件流指针打开([in] BSTR 文件路径, [in] BSTR 模式字符串, [out, retval] LONG* nret);                                 //文件打开/创建 (可用来读写文本或二进制文件) 与 C++ wfopen完全相同
+	[id(602), helpstring("文件指针移动")] HRESULT 文件流指针移动([in] LONG 文件指针, [in] LONG 位移量, [in] BSTR 起点常量字符串, [out, retval] LONG* nret);                            //将文件指针移动到指定字节位置 与 C++  fseek完全相同
+	[id(603), helpstring("文件指针读取")] HRESULT 文件流指针读取([in] LONG 字节大小, [in] LONG 数量, [in] LONG 文件指针, [out] VARIANT* nret, [out, retval] BSTR* _Buffer); //从文件指针位置开始读取指定长度和字节的内容保存到缓存 (总读取数量为:  字节长度 * 数量)
+	[id(604), helpstring("文件指针写入")] HRESULT 文件流指针写入([in] LONG 内容, [in] LONG 字节大小, [in] LONG 数量, [in] LONG 文件指针, [out, retval] LONG* nret);//从文件指针位置开始写入缓存内包含的指定长度和字节的内容 (总写入数量为:  字节长度 * 数量)
+	[id(605), helpstring("文件指针複製")] HRESULT 文件流指针複製([in] BSTR 内容, [in] LONG 複製数量, LONG 文件指针, [out, retval] BSTR* retstring);                //检查文件是否读到结尾 与 C++  fgetws完全相同
+	[id(606), helpstring("文件指针关闭")] HRESULT 文件流指针关闭([in] LONG 文件指针, [out, retval] LONG* nret);            //关闭文件指针
+	[id(607), helpstring("内存映射")] HRESULT 内存映射([in] BSTR 文件路径, [out] VARIANT* 返回字节数量, [out, retval] BSTR* buf);         //将任意文件/图像直接映射到内存 (对于超大型文件效果很好)
+	[id(608), helpstring("枚举配置文件小节名")] HRESULT 配置文件枚举小节([in] BSTR 文件路径, [out, retval] BSTR* retstring);           //枚举指定配置文件(INI)的所有小节名
+	[id(609), helpstring("枚举配置文件小键名")] HRESULT 配置文件枚举键名([in] BSTR  节名, [in] BSTR 文件路径, [out, retval] BSTR* retstring);//枚举指定配置文件(INI)的所有小节名
+#pragma endregion
+	
+#pragma region 转换
+	[id(701), helpstring("a b数值互换")] HRESULT 交换变量([in, out] VARIANT* 变量a, [in, out] VARIANT* 变量b, [out, retval] LONG* nret);        //将两个任意变量的数值互换 (a b数值互换)
+	[id(702), helpstring("高4位低4位互换")] HRESULT 交换高低4位([in] BYTE 变量, [out, retval] LONG * nret);                //将int8 高4位低4位互换
+	[id(703), helpstring("高8位低8位互换")] HRESULT 交换高低8位([in] WORD 变量, [out, retval] LONG * nret);                //将int16(short) 高8位低8位互换
+	[id(704), helpstring("高16位低16位互换")] HRESULT 交换高低16位([in] LONG 变量, [out, retval] LONG * nret);                //将int32(long) 高16位低16位互换
+	[id(705), helpstring("高32位低32位互换")] HRESULT 交换高低32位([in] LONGLONG 变量, [out, retval] LONGLONG * nret);          //将int64(longlong) 高32位低32位互换//TC8.0限定
+	//
+	[id(706), helpstring("进制字符串转长整形")] HRESULT 进制字符串转长整形([in] BSTR 某进制字符串, [in] LONG 进制数, [out, retval] LONG* nret);                   //任意进制的字符串转长整形(long)
+	[id(707), helpstring("进制字符串转超长整形")] HRESULT 进制字符串转超长整形([in] BSTR _String, [in] LONG _Radix, [in, out] VARIANT* llret, [out, retval] LONG* nret);//任意进制的字符串转超长整形(longlong)
+	[id(708), helpstring("十进制字符串转十进制长整形")] HRESULT 十进制字符串转十进制长整形([in] BSTR 整数字符串, [out, retval] LONG* nret);            //十进制字符串转十进制长整形
+	[id(709), helpstring("十进制字符串转十进制超长整形")] HRESULT 十进制字符串转十进制超长整形([in] BSTR _String, [in, out] VARIANT* llret, [out, retval] LONG* nret);      //十进制字符串转十进制超长整形 //TC8.0限定
+	[id(710), helpstring("十进制长整形转进制字符串")] HRESULT 十进制长整形转进制字符串([in] LONG 整数, [in] LONG 进制数, [out, retval] BSTR* retstring);      //十进制长整形转任意进制小写字符串
+	[id(711), helpstring("十进制超长整形进制转字符串")] HRESULT 十进制超长整形进制转字符串([in] LONGLONG 超长整数, [in] LONG 进制数, [out, retval] BSTR* retstring); //十进制超长整形转任意进制小写字符串 //TC8.0限定
+	[id(712), helpstring("char* 转 DOUBLE")] HRESULT 字符串转双精度浮点数([in] BSTR _String, [out, retval] DOUBLE* dret);          //char* 转 DOUBLE
+	[id(713), helpstring("char* 转 FLOAT")] HRESULT 字符串转浮点数([in] BSTR _String, [out, retval] FLOAT* fret);          //char* 转 float
+	[id(714), helpstring("两个长整型转WORD")] HRESULT 转WORD([in] LONG 整数a, [in] LONG 整数b, [out, retval] WORD* wret);        //将任意两个长整型转换成 WORD   _MAKEWORD(低位, 高位)
+	[id(715), helpstring("两个长整型转LONG")] HRESULT 转LONG([in] LONG 整数a, [in] LONG 整数b, [out, retval] LONG* nret);        //将任意两个长整型转换成 LONG   _MAKELONG(低位, 高位)
+	[id(716), helpstring("取出长整型的低位WORD")] HRESULT 取低WORD([in] LONG 整数, [out, retval] WORD* wret);                  //取出长整型的低位WORD   LOWORD(整数)
+	[id(717), helpstring("长整型的高位WORD")] HRESULT 取高WORD([in] LONG 整数, [out, retval] WORD* wret);                  //取出长整型的高位WORD   LOWORD(整数)
+	[id(718), helpstring("取出短整型的低位BYTE")] HRESULT 取低BYTE([in] WORD 短整数, [out, retval] BYTE* byret);                  //取出短整型的低位BYTE   LOBYTE(整数)
+	[id(719), helpstring("取出短整型的高位BYTE")] HRESULT 取高BYTE([in] WORD 短整数, [out, retval] BYTE* byret);                  //取出短整型的高位BYTE   LOBYTE(整数)
+	[id(720), helpstring("是否是资源的整数标识符")] HRESULT 是否资源标识符([in] LONG 整数, [out, retval] LONG* nret);    //确定输入值是否是资源的整数标识符
+	[id(721), helpstring("转换为与资源管理类型")] HRESULT 转资源管理类型([in] LONG 整数, [out, retval] BSTR* retstring);       //将整数值转换为与资源管理功能兼容的资源类型。此宏用于代替包含资源名称的字符串
+	[id(722), helpstring("两个长整型转WPARAM")] HRESULT 转W参数([in] LONG 低位整数, [in] LONG 高位整数, [out, retval] LONG* nret);    //将任意两个长整型转换成 LONG   _MAKEWPARAM(低位, 高位)
+	[id(723), helpstring("两个长整型转换成LPARAM")] HRESULT 转L参数([in] LONG 低位整数, [in] LONG 高位整数, [out, retval] LONG* nret);    //将任意两个长整型转换成 LONG   _MAKELPARAM(低位, 高位)
+	[id(724), helpstring("两个长整型转换成LRESULT")] HRESULT 转LRESULT([in] LONG 低位整数, [in] LONG 高位整数, [out, retval] LONG* nret);  //将任意两个长整型转换成 LONG   _MAKELRESULT(低位, 高位)
+	[id(725), helpstring("合併为 LGID")] HRESULT 转LGID([in] LONG 子语言标识符, [in] LONG 主语言标识符, [out, retval] WORD* wret);      //将子语言标识符和主语言标识符合併为 LGID     _MAKELANGID(子, 主)
+	[id(726), helpstring("LGID获取主语言标识符")] HRESULT 取主语言标识符([in] LONG lgid, [out, retval] WORD* wret);        //LGID中获取主语言标识符
+	[id(727), helpstring("LGID获取子语言标识符")] HRESULT 取子语言标识符([in] LONG lgid, [out, retval] WORD* wret);            //LGID中获取子语言标识符
+	[id(728), helpstring("获取LCID")] HRESULT 取LCID([in] LONG srtid, [in] LONG lgid, [out, retval] DWORD* dwret);//获取LCID
+	[id(729), helpstring("LPARAM取XY")] HRESULT L参数转XY([in] LONG L参数, [out] VARIANT* 返回X, [out] VARIANT* 返回Y, [out, retval] LONG* nret);            //从LPARAM 或任意长整形中取出包含x,y座标的POINTS结构体
+	[id(730), helpstring("准备状态图像的索引")] HRESULT 取图像索引([in] LONG 整数, [out, retval] LONG* nret);   //获取准备状态图像的索引
+
+	[id(731), helpstring("繁简体转换")] HRESULT 繁简体转换([in] BSTR 字符串内容, [in] LONG 语系模式, [out, retval] BSTR* retstring);//繁简体转换
+	[id(732), helpstring("GB2312 转 UTF8")] HRESULT GB2312转UTF8([in] BSTR GB2312字符串, [out, retval] BSTR* retstring);//char* GB2312 转 UTF8
+	[id(733), helpstring("UTF8 转 GB2312")] HRESULT UTF8转GB2312([in] BSTR UTF8字符串, [out, retval] BSTR* retstring);  //char* UTF8 转 GB2312
+	[id(734), helpstring("GB2312 转 BIG5")] HRESULT GB2312转BIG5([in] BSTR GB2312字符串, [out, retval] BSTR* retstring);//char* GB2312 转 BIG5
+	[id(735), helpstring("BIG5 转 GB2312")] HRESULT BIG5转GB2312([in] BSTR BIG5字符串, [out, retval] BSTR* retstring);  //char* BIG5 转 GB2312
+	[id(736), helpstring("UTF8 转 BIG5")] HRESULT UTF8转BIG5([in] BSTR UTF8字符串, [out, retval] BSTR* retstring);    //char* UTF8 转 BIG5
+	[id(737), helpstring("BIG5 转 UTF8")] HRESULT BIG5转UTF8([in] BSTR BIG5字符串, [out, retval] BSTR* retstring);    //char* BIG5 转 UTF8
+#pragma endregion
+
+#pragma region 网络
+	[id(901), helpstring("初始化网络环境")] HRESULT 网络初始化([out, retval] LONG* nret);                  //初始化网络环境,使用网络编程函数前需要先用该函数初始化
+	[id(902), helpstring("关闭初始化")] HRESULT 网络关闭([out, retval] LONG* nret);                       //网络程序结束后释放网络资源,关闭初始化
+	[id(903), helpstring("创建套接字")] HRESULT 网络套接字([in] BSTR 类型, [out, retval] LONG* nret);            //创建套接字,返回套接字句柄
+	[id(904), helpstring("关闭套接字")] HRESULT 网络关闭套接字([in] LONG 套接字, [out, retval] LONG* nret);//网络程序结束后,关闭套接字,释放资源
+	[id(905), helpstring("客户端向服务器发送一个连接")] HRESULT 网络连接([in] LONG 套接字, [in] BSTR IP地址, [in] USHORT 端口, [out, retval] LONG* nret); //客户端向服务器发送一个连接(服务器接受连接后即可与服务器通讯),如果没有连接该函数将会等待,直到有连接过来为止
+	[id(906), helpstring("绑定套接字")] HRESULT 网络绑定([in] LONG 套接字, [in] USHORT serv_port, [out, retval] LONG* nret);//绑定套接字,并开启指定端口
+	[id(907), helpstring("监听套接字")] HRESULT 网络监听([in] LONG 套接字e, [in] LONG ncout, [out, retval] LONG* nret);    //监听套接字,指定可同时连接数
+	[id(908), helpstring("接受一个客户端的连接")] HRESULT 网络接受([in] LONG 套接字, [out] VARIANT* nret, [out, retval] BSTR* serv_ip);//接受一个客户端的连接,返回一个新的套接字句柄(程序结束后记得释放该套接字句柄),第二参数返回该客户端的ip地址
+	[id(909), helpstring("接收一个绑定套接字发送数据")] HRESULT 网络接收([in] LONG 套接字, [out, retval] BSTR* Recvbuff); //接收一个绑定套接字发送过来的数据
+	[id(910), helpstring(" 向一个绑定的套接字发送")] HRESULT 网络发送([in] LONG 套接字, [in] BSTR 发送内容, [out, retval] LONG* nret);     // 向一个绑定的套接字发送字符串 
+	[id(911), helpstring("发送字符串到指定地址")] HRESULT 网络发送到([in] LONG 套接字, [in] BSTR 发送内容, [out, retval] LONG* nret);   //发送字符串到指定地址(一般用于UDP通讯)
+	[id(912), helpstring("接收指定地址发送过来的数据")] HRESULT 网络接收来自([in] LONG 套接字, [in] LONG 长度, [in] BSTR IP地址, [in] USHORT rPort, [out, retval] BSTR* data);//接收指定地址发送过来的数据(一般用于UDP通讯)
+	[id(913), helpstring("获取IP")] HRESULT 获取IP([in] LONG type, [in] BSTR param, [out, retval] BSTR* retstring);
+#pragma endregion
+#pragma endregion
+
+
+#pragma region 英文
+#pragma region 系统
+	[id(2000), helpstring("TEST")] HRESULT TEST([in] LONG pvoid, [in] LONG count, [in] LONG p0, [in] LONG p1, [in] LONG p2, [in] LONG p3, [out, retval] LONG* nret);
+	[id(2001), helpstring("版本")] HRESULT Ver([out, retval] BSTR* retver);
+	[id(2002), helpstring("输入框")] HRESULT InputBox([in] LONG hWnd, [in] LONG Color, [in] BSTR szCaption, [in] BSTR szPrompt, [in] BSTR szDefaultText, [out, retval] BSTR* retstring);
+	[id(2003), helpstring("扫描调试器")] HRESULT AntiDebuger([out, retval] LONG* nret);
+	[id(2004), helpstring("VEH回调初始化")] HRESULT AntiVEHCallBack([out, retval] LONG* nret);
+	[id(2005), helpstring("异常回调初始化")] HRESULT InitExceptionCallback([in] LONG hWnd, [in] LONG en, [out, retval] LONG* nret);
+	[id(2006), helpstring("获取最后异常信息")] HRESULT GetLastException([out, retval] BSTR* retstring);
+	[id(2007), helpstring("延时")] HRESULT Delay([in] ULONG s, [in] LONG en, [out, retval] LONG* nret);
+	[id(2008), helpstring("退出")] HRESULT Exit([in] BSTR fileName, [out, retval] LONG* nret);
+	//其他
+	[id(2009), helpstring("类型占字节")] HRESULT Sizeof([in] BSTR type, [out, retval] LONG* nret);              //获取指定变量类型所佔字节大小
+#pragma endregion
+
+#pragma region 内存
+	[id(2101), helpstring("进程提权")] HRESULT EnablePrivilege([in] BSTR dwPrivilege, [out, retval] LONG* nret);//提升当前线程权限
+	[id(2102), helpstring("清理内存")] HRESULT FreeProcessMemory([in] LONG hWnd, [out, retval] LONG* nret);                  //根据窗口句柄释放虚拟内存
+	[id(2103), helpstring("汇編加入")] HRESULT AsmAdd([in] BSTR asm_ins, [out, retval] LONG* nret);
+	[id(2104), helpstring("汇編注入")] HRESULT AsmCall([in] LONG hwnd, [in] LONG mode, [in] LONG timeout, [out, retval] LONG* nret);
+	[id(2105), helpstring("汇編清空")] HRESULT AsmClear([out, retval] LONG* nret);
+	[id(2106), helpstring("汇編轉16進制")] HRESULT Assemble([in] LONG base_addr, [out, retval] BSTR* retstring);
+	[id(2107), helpstring("16進制轉汇編")] HRESULT DisAssemble([in] BSTR asm_code, [in] LONG base_addr, [out, retval] BSTR* retstring);
+
+	[id(2110), helpstring("取整形地址")] HRESULT GetFindDataAddr([in] LONG hWnd, [in] BSTR strs, [in, out] VARIANT* pret, [out, retval] LONG* dwret);     //32位元字符串地址(+偏移) 转十进制整数 如 [[<xx.exe+1234>+15]+18]+2A
+	[id(2111), helpstring("內存讀取整數")] HRESULT ReadIntAddr([in] LONG hWnd, [in] LONGLONG addr, [in] LONG type, [out, retval] LONGLONG* nret);
+	[id(2112), helpstring("內存讀取DATA")] HRESULT ReadDataAddr([in] LONG hwnd, [in] LONGLONG addr, [in] LONG len, [out, retval] BSTR* retstring);
+	[id(2113), helpstring("內存寫入整數")] HRESULT WriteIntAddr([in] LONG hWnd, [in] LONGLONG addr, [in] LONG type, [in] LONGLONG value, [out, retval] LONG* nret);
+	[id(2114), helpstring("內存遍歷讀取")] HRESULT ReadIntTraverseAddr([in] LONG hWnd, [in] LONGLONG addr, [in] LONGLONG offest, [in] LONG count, [in] LONG type, [out, retval] BSTR* retstring);
+	[id(2115), helpstring("WriteData")] HRESULT WriteDataAddr([in] LONG hwnd, [in] LONGLONG addr, [in] BSTR data, [out, retval] LONG* nret);
+
+	[id(2120), helpstring("内存初始化")] HRESULT Memset([in] VARIANT* _Dst, [in] LONG Val, [in] LONG Size, [out, retval] LONG* nret);       //初始化并填充指定内存 与C++ memset宏完全相同
+	[id(2121), helpstring("内存複製")] HRESULT Memcpy([in] VARIANT* _Dst, [in] VARIANT* _Src, [in] LONG Size, [out, retval] LONG* nret);      //将指定大小字节_Src内存内容複製给_Dst 与C++ memcpy宏完全相同
+	[id(2122), helpstring("申请内存")] HRESULT New([in] BSTR sztype, [in] LONG size, [out, retval] VARIANT* nret);               //动态分配内存空间  size 大于0为变量数组   可以是堆，也可以是静态存储区
+	[id(2123), helpstring("申请堆")] HRESULT Malloc([in] BSTR sztype, [in] LONG size, [out, retval] VARIANT* nret);            //从堆上动态分配内存
+	[id(2124), helpstring("释放内存")] HRESULT Delete([in, out] VARIANT* _Block, [out, retval] LONG* nret);                         //释放new出来的内存指针
+	[id(2125), helpstring("释放内存数组")] HRESULT Deletes([in, out] VARIANT* _Block, [out, retval] LONG* nret);                        //释放new出来的数组内存指针
+	[id(2126), helpstring("释放堆")] HRESULT Free([in, out] VARIANT* _Block, [out, retval] LONG* nret);                           //释放malloc内存指针
+	[id(2127), helpstring("Set")] HRESULT Set([in] VARIANT* Pvoid, [in] BSTR type, [in] VARIANT* value, [out, retval] LONG* nret);                    
+	[id(2128), helpstring("Get")] HRESULT Get([in] VARIANT* Pvoid, [in] BSTR type, [out, retval] VARIANT* nret);             
+#pragma endregion
+
+#pragma region 计算
+	[id(2201), helpstring("随机整数")] HRESULT Rand([in] LONG MIN, [in] LONG MAX, [out, retval] LONG* nret);                      //指定范围的真随机数  C++ <radom> 
+	[id(2202), helpstring("随机浮点数")] HRESULT RandDouble([in] DOUBLE DOUBLE_MIN, [in] DOUBLE DOUBLE_MAX, [out, retval] DOUBLE* dret); //指定范围的双精度浮点数随机数  C++ <radom> 
+	[id(2203), helpstring("位右移")] HRESULT ShiftRight([in] LONG l, [in] LONG _Radix, [out, retval] LONG* nret);               //位右移
+	[id(2204), helpstring("位左移")] HRESULT ShiftLeft([in] LONG l, LONG _Radix, [out, retval] LONG* nret);                //位左移
+	[id(2205), helpstring("位与")] HRESULT AND([in] BSTR ins, [out, retval] LONG* nret);                               //位与 (&)
+	[id(2206), helpstring("位或")] HRESULT OR([in] BSTR ins, [out, retval] LONG* nret);                                //位或 (|)
+	[id(2207), helpstring("异或")] HRESULT XOR([in] BSTR ins, [out, retval] LONG* nret);                               //异或 (|)
+	[id(2208), helpstring("位反")] HRESULT NOT([in] LONG a, [out, retval] LONG* nret);                                   //位反 (~)
+
+	[id(2209), helpstring("取PI")] HRESULT PI([out, retval] DOUBLE* dret);                                        //返回一个PI常量的DOUBLE指针
+	[id(2210), helpstring("反余弦")] HRESULT Acos([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回反余弦数字
+	[id(2211), helpstring("反双曲余弦")] HRESULT Acosh([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回数字的双曲余弦值
+	[id(2212), helpstring("反正弦")] HRESULT Asin([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回反正弦值
+	[id(2213), helpstring("双曲正弦")] HRESULT Asinh([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回数字的双曲正弦值
+	[id(2214), helpstring("反正切")] HRESULT Atan([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回反正切数字
+	[id(2215), helpstring("坐标反正切")] HRESULT Atan2([in] DOUBLE _Y, [in] DOUBLE _X, [out, retval] DOUBLE* dret);               //返回坐标的反正切
+	[id(2216), helpstring("弧双曲正切")] HRESULT Atanh([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回数字的弧双曲正切
+	[id(2217), helpstring("立方根")] HRESULT Cbrt([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //计算数字的立方根
+	[id(2218), helpstring("上限值")] HRESULT Ceil([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回数字的上限值
+	[id(2219), helpstring("以y符返x")] HRESULT Copysign([in] DOUBLE _Number, [in] DOUBLE _Sign, [out, retval] DOUBLE* dret);  //以y的符号返回x的大小
+	[id(2220), helpstring("余弦")] HRESULT Cos([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //返回参数的余弦
+	[id(2221), helpstring("双曲余弦")] HRESULT Cosh([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回某个角度的双曲余弦值
+
+	[id(2222), helpstring("升幂x指数e")] HRESULT Exp([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //计算升为幂x的指数e
+	[id(2223), helpstring("以2底指数")] HRESULT Exp2([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //计算x的以2为底的指数
+	[id(2224), helpstring("位反")] HRESULT Expm1([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //计算出幂乘以x减一的指数
+	[id(2225), helpstring("幂乘以x减一指数")] HRESULT Fabs([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回参数的绝对值
+	[id(2226), helpstring("xy正差")] HRESULT Fdim([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                //返回x和y之间的正差
+	[id(2227), helpstring("下限值")] HRESULT Floor([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回十进制数字的下限值
+	[id(2228), helpstring("x乘以y加z")] HRESULT Fma([in] DOUBLE _X, [in] DOUBLE _Y, [in] DOUBLE _Z, [out, retval] DOUBLE* dret);      //计算表达式x * y + z
+	[id(2229), helpstring("两数取最大")] HRESULT Fmax([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                //返回传递的两个参数中最大的
+	[id(2230), helpstring("两数取最小")] HRESULT Fmin([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                //返回两个给定参数中的最小值
+	[id(2231), helpstring("浮点数余数")] HRESULT Fmod([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                //计算除法浮点数的余数
+
+	[id(2232), helpstring("浮点数尾数指数")] HRESULT Frexp([in] DOUBLE _X, [out] VARIANT* _Y, [out, retval] DOUBLE* dret);                 //返回一个浮点数的尾数和指数
+	[id(2233), helpstring("平方和的平方根")] HRESULT Hypot([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);              //返回参数平方和的平方根
+	[id(2234), helpstring("绝对值的对数")] HRESULT Ilogb([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回| x |的对数的整数部分
+	[id(2235), helpstring("x和2的乘积返回到幂e")] HRESULT Ldexp([in] DOUBLE _X, [in] LONG _Y, [out, retval] DOUBLE* dret);                  //将x和2的乘积返回到幂e
+	[id(2236), helpstring("取对数")] HRESULT Log([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //返回数字的自然对数
+	[id(2237), helpstring("取以10为底对数")] HRESULT Log10([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回数字的以10为底的对数
+	[id(2238), helpstring("取以2为底对数")] HRESULT Log2([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //计算x的以2为底的对数
+	[id(2239), helpstring("绝对值对数")] HRESULT Logb([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回| x |的对数
+	[id(2240), helpstring("x加一对数")] HRESULT Log1p([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回x + 1的自然对数
+	[id(2241), helpstring("舍入参数")] HRESULT Lrint([in] DOUBLE _X, [out, retval] LONG* nret);                             //使用当前舍入模式舍入参数
+	[id(2242), helpstring("取最近长整型")] HRESULT Lround([in] DOUBLE _X, [out, retval] LONG* nret);                            //返回最接近参数的long int值
+
+	[id(2243), helpstring("浮点数拆解")] HRESULT Modf([in] DOUBLE x, [out] VARIANT* intpart, [out, retval] DOUBLE* dret);           //将数字分解为整数和小数部分
+	[id(2244), helpstring("取NaN值")] HRESULT Nan([in] BSTR _X, [out, retval] DOUBLE* dret);                       //返回NaN值
+	[id(2245), helpstring("参数舍入")] HRESULT Nearbyint([in] DOUBLE _X, [out, retval] DOUBLE* dret);                      //将参数舍入为使用当前舍入模式
+	[id(2246), helpstring("x在y方向上的下一个可表示值")] HRESULT Nextafter([in] DOUBLE _X, DOUBLE _Y, [out, retval] DOUBLE* dret);          //表示x在y方向上的下一个可表示值
+	[id(2247), helpstring("求幂")] HRESULT Pow([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);                 //计算幂
+	[id(2248), helpstring("求余数")] HRESULT Remainder([in] DOUBLE _X, [in] DOUBLE _Y, [out, retval] DOUBLE* dret);           //返回x / y的余数
+	[id(2249), helpstring("求商")] HRESULT Remquo([in] DOUBLE _X, [in] DOUBLE _Y, [out] VARIANT* _Z, [out, retval] DOUBLE* dret);     //计算机余数并存储x / y的商
+	[id(2250), helpstring("舍入参数")] HRESULT Rint([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //使用当前舍入模式舍入参数
+	[id(2251), helpstring("取最接近整数")] HRESULT Round([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //返回最接近参数的整数值
+	[id(2252), helpstring("x和FLT_RADX乘以n的乘积")] HRESULT Scalbln([in] DOUBLE _X, [in] LONG _Y, [out, retval] DOUBLE* dret);               //计算x和FLT_RADX乘以n的乘积
+	[id(2253), helpstring("x和FLT_RADX乘以n的乘积")] HRESULT Scalbn([in] DOUBLE _X, [in] LONG _Y, [out, retval] DOUBLE* dret);                 //计算x和FLT_RADX乘以n的乘积
+	[id(2254), helpstring("正弦")] HRESULT Sin([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //返回参数的正弦
+	[id(2255), helpstring("双曲正弦")] HRESULT Sinh([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回某个角度的双曲正弦
+	[id(2256), helpstring("平方根")] HRESULT Sqrt([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //计算数字的平方根
+	[id(2257), helpstring("取切线")] HRESULT Tan([in] DOUBLE _X, [out, retval] DOUBLE* dret);                            //返回参数的切线
+	[id(2258), helpstring("取双曲正切")] HRESULT Tanh([in] DOUBLE _X, [out, retval] DOUBLE* dret);                           //返回角度的双曲正切
+	[id(2259), helpstring("浮点数符号截断")] HRESULT Trunc([in] DOUBLE _X, [out, retval] DOUBLE* dret);                          //截断数字的符号部分
+#pragma endregion
+
+#pragma region 数组
+	[id(2401), helpstring("数组取最大")] HRESULT ArrayGetHighest([in] BSTR szArr, [in] LONG en, [out, retval] LONG* nret);//数组取最大值或包含最大值元素的下标
+	[id(2402), helpstring("数组取最小")] HRESULT ArrayGetLowest([in] BSTR szArr, [in] LONG en, [out, retval] LONG* nret); //数组取最小值或包含最小值元素的下标
+	[id(2403), helpstring("数组整型去重")] HRESULT ArrayUniqueInt([in] BSTR szArr, [out, retval] BSTR* retstring);                //整数数组去重(必须为完全整数数组)
+	[id(2404), helpstring("数组字符串去重")] HRESULT ArrayUnique([in] BSTR szArr, [out, retval] BSTR* retstring);                //字符串数组去重(必须为完全字符串数组)
+	[id(2405), helpstring("数组整数排序")] HRESULT ArraySortInt([in] BSTR szArr, [in] LONG en, [out, retval] BSTR* retstring);  //整数数组排序(必须为完全整数数组)
+	[id(2406), helpstring("数组浮点数排序")] HRESULT ArraySort([in] BSTR szArr, [out, retval] BSTR* retstring);                  //字符串数组排序 根据ASCII 由小到大排列 (必须为完全字符串数组)
+	[id(2407), helpstring("数组过滤")] HRESULT ArrayFilter([in] BSTR szArr, [in] BSTR str, [out, retval] BSTR* retstring);    //字符串数组过滤 过滤掉包含指定字符串的元素 返回新的数组
+	[id(2408), helpstring("数组初始化")] HRESULT ArrayAlloc([in] LONG dim, [in] BSTR szsize, [out, retval] BSTR* retstring);       //初始化多维数组并填充 null (目前最多3维数组不限制大小)
+	[id(2409), helpstring("数组倒序")] HRESULT ArrayReverse([in] BSTR szArr, [out, retval] BSTR* retstring);
+	[id(2410), helpstring("数组旋转")] HRESULT ArrayRotate([in] BSTR szArr, [in] LONG mov, [in] LONG en, [out, retval] BSTR* retstring);
+	[id(2411), helpstring("数组移位")] HRESULT ArrayShift([in] BSTR szArr, [in] LONG mov, [in] LONG en, [out, retval] BSTR* retstring);
+#pragma endregion
+
+#pragma region 字符串
+	[id(2501), helpstring("字符串分割")] HRESULT StringSplit([in] BSTR ins, [in] BSTR delimit, [out] VARIANT* nret, [out, retval] BSTR* outs);                   //字符串分割 引用返回数组 返回数组大小
+	[id(2502), helpstring("字符串排序")] HRESULT StringSort([in] BSTR ins, [out, retval] BSTR* retstring);                     //字符串排序
+	[id(2503), helpstring("字符串洗牌")] HRESULT StringShuffle([in] BSTR ins, [out, retval] BSTR* retstring);                  //字符串洗牌
+	[id(2504), helpstring("字符串去重")] HRESULT StringUnique([in] BSTR ins, [out, retval] BSTR* retstring);                   //字符串去重
+	[id(2505), helpstring("字符串倒序")] HRESULT StringReverse([in] BSTR ins, [out, retval] BSTR* retstring);               
+	[id(2506), helpstring("字符串旋转")] HRESULT StringRotate([in] BSTR ins, [in] LONG mov, [in] LONG en, [out, retval] BSTR* retstring);  
+	[id(2507), helpstring("字符串移位")] HRESULT StringShift([in] BSTR ins, [in] LONG mov, [in] LONG en, [out, retval] BSTR* retstring);
+	[id(2508), helpstring("xml转json")] HRESULT StringXml2Json([in] BSTR _Src, [out, retval] BSTR* retstring);         //xml字符串转json字符串
+	[id(2509), helpstring("json转xml")] HRESULT StringJson2Xml([in] BSTR _Src, [out, retval] BSTR* retstring);         //json字符串转xml字符串
+#pragma endregion
+
+#pragma region 文件
+	[id(2601), helpstring("文件指针打开")] HRESULT Fwopen([in] BSTR _FileName, [in] BSTR _Mode, [out, retval] LONG* nret);                                 //文件打开/创建 (可用来读写文本或二进制文件) 与 C++ wfopen完全相同
+	[id(2602), helpstring("文件指针移动")] HRESULT Fseek([in] LONG _Stream, [in] LONG _Offset, [in] BSTR dst, [out, retval] LONG* nret);                            //将文件指针移动到指定字节位置 与 C++  fseek完全相同
+	[id(2603), helpstring("文件指针读取")] HRESULT Fread([in] LONG _ElementSize, [in] LONG _ElementCount, [in] LONG _Stream, [out] VARIANT* nret, [out, retval] BSTR* _Buffer); //从文件指针位置开始读取指定长度和字节的内容保存到缓存 (总读取数量为:  字节长度 * 数量)
+	[id(2604), helpstring("文件指针写入")] HRESULT Fwrite([in] LONG _Buffer, [in] LONG _ElementSize, [in] LONG _ElementCount, [in] LONG _Stream, [out, retval] LONG* nret);//从文件指针位置开始写入缓存内包含的指定长度和字节的内容 (总写入数量为:  字节长度 * 数量)
+	[id(2605), helpstring("文件指针複製")] HRESULT Fgetws([in] BSTR _Buffer, [in] LONG _BufferCount, LONG _Stream, [out, retval] BSTR* retstring);                //检查文件是否读到结尾 与 C++  fgetws完全相同
+	[id(2606), helpstring("文件指针关闭")] HRESULT Fclose([in] LONG _Stream, [out, retval] LONG* nret);            //关闭文件指针
+	[id(2607), helpstring("内存映射")] HRESULT Mmap([in] BSTR _FileName, [out] VARIANT* dwret, [out, retval] BSTR* buf);         //将任意文件/图像直接映射到内存 (对于超大型文件效果很好)
+	[id(2608), helpstring("枚举配置文件小节名")] HRESULT EnumIniSection([in] BSTR _FileName, [out, retval] BSTR* retstring);           //枚举指定配置文件(INI)的所有小节名
+	[id(2609), helpstring("枚举配置文件小键名")] HRESULT EnumIniKey([in] BSTR  _Key, [in] BSTR _FileName, [out, retval] BSTR* retstring);//枚举指定配置文件(INI)的所有小节名
+#pragma endregion
+
+#pragma region 转换
+	[id(2701), helpstring("a b数值互换")] HRESULT Swap([in, out] VARIANT* a, [in, out] VARIANT* b, [out, retval] LONG* nret);        //将两个任意变量的数值互换 (a b数值互换)
+	[id(2702), helpstring("高4位低4位互换")] HRESULT SwapByte([in] BYTE a, [out, retval] LONG* nret);                //将int8 高4位低4位互换
+	[id(2703), helpstring("高8位低8位互换")] HRESULT SwapWord([in] WORD a, [out, retval] LONG* nret);                //将int16(short) 高8位低8位互换
+	[id(2704), helpstring("高16位低16位互换")] HRESULT SwapLong([in] LONG a, [out, retval] LONG* nret);                //将int32(long) 高16位低16位互换
+	[id(2705), helpstring("高32位低32位互换")] HRESULT SwapInt64([in] LONGLONG a, [out, retval] LONGLONG* nret);          //将int64(longlong) 高32位低32位互换//TC8.0限定
+	//
+	[id(2706), helpstring("进制字符串转长整形")] HRESULT XStringToL([in] BSTR _String, [in] LONG _Radix, [out, retval] LONG* nret);                   //任意进制的字符串转长整形(long)
+	[id(2707), helpstring("进制字符串转超长整形")] HRESULT XStringToI64([in] BSTR _String, [in] LONG _Radix, [in, out] VARIANT* llret, [out, retval] LONG* nret);//任意进制的字符串转超长整形(longlong)
+	[id(2708), helpstring("十进制字符串转十进制长整形")] HRESULT StringToL([in] BSTR _String, [out, retval] LONG* nret);            //十进制字符串转十进制长整形
+	[id(2709), helpstring("十进制字符串转十进制超长整形")] HRESULT StringToI64([in] BSTR _String, [in, out] VARIANT* llret, [out, retval] LONG* nret);      //十进制字符串转十进制超长整形 //TC8.0限定
+	[id(2710), helpstring("十进制长整形转进制字符串")] HRESULT LToXString([in] LONG _Value, [in] LONG _Radix, [out, retval] BSTR* retstring);      //十进制长整形转任意进制小写字符串
+	[id(2711), helpstring("十进制超长整形进制转字符串")] HRESULT I64ToXString([in] LONGLONG _Value, [in] LONG _Radix, [out, retval] BSTR* retstring); //十进制超长整形转任意进制小写字符串 //TC8.0限定
+	[id(2712), helpstring("char* 转 DOUBLE")] HRESULT StringToDbl([in] BSTR _String, [out, retval] DOUBLE* dret);          //char* 转 DOUBLE
+	[id(2713), helpstring("char* 转 FLOAT")] HRESULT StringToFlt([in] BSTR _String, [out, retval] FLOAT* fret);          //char* 转 float
+	[id(2714), helpstring("两个长整型转WORD")] HRESULT TMAKEWORD([in] LONG a, [in] LONG b, [out, retval] WORD* wret);        //将任意两个长整型转换成 WORD   _MAKEWORD(低位, 高位)
+	[id(2715), helpstring("两个长整型转LONG")] HRESULT TMAKELONG([in] LONG a, [in] LONG b, [out, retval] LONG* nret);        //将任意两个长整型转换成 LONG   _MAKELONG(低位, 高位)
+	[id(2716), helpstring("取出长整型的低位WORD")] HRESULT TLOWORD([in] LONG l, [out, retval] WORD* wret);                  //取出长整型的低位WORD   LOWORD(整数)
+	[id(2717), helpstring("长整型的高位WORD")] HRESULT THIWORD([in] LONG l, [out, retval] WORD* wret);                  //取出长整型的高位WORD   LOWORD(整数)
+	[id(2718), helpstring("取出短整型的低位BYTE")] HRESULT TLOBYTE([in] WORD w, [out, retval] BYTE* byret);                  //取出短整型的低位BYTE   LOBYTE(整数)
+	[id(2719), helpstring("取出短整型的高位BYTE")] HRESULT THIBYTE([in] WORD w, [out, retval] BYTE* byret);                  //取出短整型的高位BYTE   LOBYTE(整数)
+	[id(2720), helpstring("是否是资源的整数标识符")] HRESULT TIS_INTRESOURCE([in] LONG _r, [out, retval] LONG* nret);    //确定输入值是否是资源的整数标识符
+	[id(2721), helpstring("转换为与资源管理类型")] HRESULT TMAKEINTRESOURCE([in] LONG i, [out, retval] BSTR* retstring);       //将整数值转换为与资源管理功能兼容的资源类型。此宏用于代替包含资源名称的字符串
+	[id(2722), helpstring("两个长整型转WPARAM")] HRESULT TMAKEWPARAM([in] LONG l, [in] LONG h, [out, retval] LONG* nret);    //将任意两个长整型转换成 LONG   _MAKEWPARAM(低位, 高位)
+	[id(2723), helpstring("两个长整型转换成LPARAM")] HRESULT TMAKELPARAM([in] LONG l, [in] LONG h, [out, retval] LONG* nret);    //将任意两个长整型转换成 LONG   _MAKELPARAM(低位, 高位)
+	[id(2724), helpstring("两个长整型转换成LRESULT")] HRESULT TMAKELRESULT([in] LONG l, [in] LONG h, [out, retval] LONG* nret);  //将任意两个长整型转换成 LONG   _MAKELRESULT(低位, 高位)
+	[id(2725), helpstring("合併为 LGID")] HRESULT TMAKELANGID([in] LONG s, [in] LONG p, [out, retval] WORD* wret);      //将子语言标识符和主语言标识符合併为 LGID     _MAKELANGID(子, 主)
+	[id(2726), helpstring("LGID获取主语言标识符")] HRESULT TPRIMARYLANGID([in] LONG lgid, [out, retval] WORD* wret);        //LGID中获取主语言标识符
+	[id(2727), helpstring("LGID获取子语言标识符")] HRESULT TSUBLANGID([in] LONG lgid, [out, retval] WORD* wret);            //LGID中获取子语言标识符
+	[id(2728), helpstring("获取LCID")] HRESULT TMAKELCID([in] LONG srtid, [in] LONG lgid, [out, retval] DWORD* dwret);//获取LCID
+	[id(2729), helpstring("LPARAM取XY")] HRESULT TMAKEPOINTS([in] LONG l, [out] VARIANT* x, [out] VARIANT* y, [out, retval] LONG* nret);            //从LPARAM 或任意长整形中取出包含x,y座标的POINTS结构体
+	[id(2730), helpstring("准备状态图像的索引")] HRESULT TINDEXTOSTATEIMAGEMASK([in] LONG i, [out, retval] LONG* nret);   //获取准备状态图像的索引
+
+	[id(2731), helpstring("繁简体转换")] HRESULT ConvertLanguage([in] BSTR str, [in] LONG type, [out, retval] BSTR* retstring);//繁简体转换
+	[id(2732), helpstring("GB2312 转 UTF8")] HRESULT GB2312ToUTF8([in] BSTR pStrGB2312, [out, retval] BSTR* retstring);//char* GB2312 转 UTF8
+	[id(2733), helpstring("UTF8 转 GB2312")] HRESULT UTF8ToGB2312([in] BSTR pStrUTF8, [out, retval] BSTR* retstring);  //char* UTF8 转 GB2312
+	[id(2734), helpstring("GB2312 转 BIG5")] HRESULT GB2312ToBIG5([in] BSTR pStrGB2312, [out, retval] BSTR* retstring);//char* GB2312 转 BIG5
+	[id(2735), helpstring("BIG5 转 GB2312")] HRESULT BIG5ToGB2312([in] BSTR pStrBIG5, [out, retval] BSTR* retstring);  //char* BIG5 转 GB2312
+	[id(2736), helpstring("UTF8 转 BIG5")] HRESULT UTF8ToBIG5([in] BSTR pStrUTF8, [out, retval] BSTR* retstring);    //char* UTF8 转 BIG5
+	[id(2737), helpstring("BIG5 转 UTF8")] HRESULT BIG5ToUTF8([in] BSTR pStrBIG5, [out, retval] BSTR* retstring);    //char* BIG5 转 UTF8
+#pragma endregion
+
+#pragma region 网络TCP/UDP
+	[id(2901), helpstring("初始化网络环境")] HRESULT NetWSAStartup([out, retval] LONG* nret);                  //初始化网络环境,使用网络编程函数前需要先用该函数初始化
+	[id(2902), helpstring("关闭初始化")] HRESULT NetClose([out, retval] LONG* nret);                       //网络程序结束后释放网络资源,关闭初始化
+	[id(2903), helpstring("创建套接字")] HRESULT NetSocket([in] BSTR sztype, [out, retval] LONG* nret);            //创建套接字,返回套接字句柄
+	[id(2904), helpstring("关闭套接字")] HRESULT NetCloseSocket([in] LONG sockhandle, [out, retval] LONG* nret);//网络程序结束后,关闭套接字,释放资源
+	[id(2905), helpstring("客户端向服务器发送一个连接")] HRESULT NetConnect([in] LONG sockhandle, [in] BSTR serv_ip, [in] USHORT serv_port, [out, retval] LONG* nret); //客户端向服务器发送一个连接(服务器接受连接后即可与服务器通讯),如果没有连接该函数将会等待,直到有连接过来为止
+	[id(2906), helpstring("绑定套接字")] HRESULT NetBind([in] LONG sockhandle, [in] USHORT serv_port, [out, retval] LONG* nret);//绑定套接字,并开启指定端口
+	[id(2907), helpstring("监听套接字")] HRESULT NetListen([in] LONG sockhandle, [in] LONG ncout, [out, retval] LONG* nret);    //监听套接字,指定可同时连接数
+	[id(2908), helpstring("接受一个客户端的连接")] HRESULT NetAccept([in] LONG sockhandle, [out] VARIANT* nret, [out, retval] BSTR* serv_ip);//接受一个客户端的连接,返回一个新的套接字句柄(程序结束后记得释放该套接字句柄),第二参数返回该客户端的ip地址
+	[id(2909), helpstring("接收一个绑定套接字发送数据")] HRESULT NetRecv([in] LONG sockhandle, [out, retval] BSTR* Recvbuff); //接收一个绑定套接字发送过来的数据
+	[id(2910), helpstring(" 向一个绑定的套接字发送")] HRESULT NetSend([in] LONG sockhandle, [in] BSTR data, [out, retval] LONG* nret);     // 向一个绑定的套接字发送字符串 
+	[id(2911), helpstring("发送字符串到指定地址")] HRESULT NetSendTo([in] LONG sockhandle, [in] BSTR data, [out, retval] LONG* nret);   //发送字符串到指定地址(一般用于UDP通讯)
+	[id(2912), helpstring("接收指定地址发送过来的数据")] HRESULT NetRecvFrom([in] LONG sockhandle, [in] LONG length, [in] BSTR serv_ip, [in] USHORT rPort, [out, retval] BSTR* data);//接收指定地址发送过来的数据(一般用于UDP通讯)
+	[id(2913), helpstring("获取IP")] HRESULT GetIP([in] LONG type, [in] BSTR param, [out, retval] BSTR* retstring);
+#pragma endregion
+
+#pragma endregion
+};
+[
+	uuid(f260a0ab-b8e5-42b4-9a6d-14df287e49f3),
+	version(1.0),
+]
+library TLibPlusLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(80b31569-7a7b-4bc1-b379-4c5e5f27d339)
+	]
+	coclass TLibPlusInterface
+	{
+		[default] interface ITLibPlusInterface;
+	};
+};
+
+import "shobjidl.idl";

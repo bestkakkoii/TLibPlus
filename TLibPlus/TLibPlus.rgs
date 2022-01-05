@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		'%APPID%' = s 'TLibPlus'
+		'TLibPlus.DLL'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}

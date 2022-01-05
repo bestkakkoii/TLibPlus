@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="資源檔">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="產生的檔案">
+      <UniqueIdentifier>{91d3e3bb-31e1-418d-97a5-0b1c7b12a74a}</UniqueIdentifier>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="TLibPlus">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="MemoryAPI">
+      <UniqueIdentifier>{ebbcbf62-3c02-4b39-9545-c234bfbda823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{89e2dfd8-292b-421c-8515-e4dd25322e11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Net">
+      <UniqueIdentifier>{566b524f-e8b0-470d-888f-a4162edd5a03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyLib">
+      <UniqueIdentifier>{9dcd47f9-4fa5-437e-bbf9-305302f3ac26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asm">
+      <UniqueIdentifier>{0e8d7b5b-8586-4408-8583-c6db54881fdd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TLibPlus_i.h">
+      <Filter>產生的檔案</Filter>
+    </ClInclude>
+    <ClInclude Include="dllmain.h">
+      <Filter>TLibPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>TLibPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>TLibPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>TLibPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="TLibPlusInterface.h">
+      <Filter>TLibPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="TMemoryAPI.h">
+      <Filter>MemoryAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="TRuntime.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="TUtilities.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="TJson.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="TDebuger.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="TNet.h">
+      <Filter>Net</Filter>
+    </ClInclude>
+    <ClInclude Include="TInputBox.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>TLibPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="TMessage.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ASM\MgAsmCom.h">
+      <Filter>Asm</Filter>
+    </ClInclude>
+    <ClInclude Include="ASM\MgAsmComDef.h">
+      <Filter>Asm</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TLibPlus.cpp">
+      <Filter>TLibPlus</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>TLibPlus</Filter>
+    </ClCompile>
+    <ClCompile Include="TLibPlus_i.c">
+      <Filter>產生的檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="TLibPlusInterface.cpp">
+      <Filter>TLibPlus</Filter>
+    </ClCompile>
+    <ClCompile Include="TMemoryAPI.cpp">
+      <Filter>MemoryAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="TRuntime.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="TUtilities.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="TJson.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="TDebuger.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="TNet.cpp">
+      <Filter>Net</Filter>
+    </ClCompile>
+    <ClCompile Include="TInputBox.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>TLibPlus</Filter>
+    </ClCompile>
+    <ClCompile Include="ASM\MgAsmBase.cpp">
+      <Filter>Asm</Filter>
+    </ClCompile>
+    <ClCompile Include="ASM\MgAsmCom.cpp">
+      <Filter>Asm</Filter>
+    </ClCompile>
+    <ClCompile Include="ASM\MgDisasm.cpp">
+      <Filter>Asm</Filter>
+    </ClCompile>
+    <ClCompile Include="ASM\MgDisasmBase.cpp">
+      <Filter>Asm</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TLibPlus.rc">
+      <Filter>資源檔</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TLibPlus.rgs">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="TLibPlus.def">
+      <Filter>TLibPlus</Filter>
+    </None>
+    <None Include="TLibPlusInterface.rgs">
+      <Filter>資源檔</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="TLibPlus.idl">
+      <Filter>TLibPlus</Filter>
+    </Midl>
+  </ItemGroup>
+</Project>
