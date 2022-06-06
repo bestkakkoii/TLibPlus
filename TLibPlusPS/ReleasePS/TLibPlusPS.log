@@ -1,0 +1,8 @@
+﻿  Checking for required files
+EXEC : error : MIDL will not generate DLLDATA.C unless you have at least 1 interface in the main project.
+D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(146,5): error MSB3073: "if exist dlldata.c goto :END
+D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(146,5): error MSB3073: echo Error: MIDL will not generate DLLDATA.C unless you have at least 1 interface in the main project.
+D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(146,5): error MSB3073: Exit 1
+D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(146,5): error MSB3073: :END
+D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(146,5): error MSB3073: 
+D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(146,5): error MSB3073: :VCEnd" 命令以返回碼 1 結束。

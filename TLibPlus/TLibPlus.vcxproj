@@ -242,6 +242,9 @@
   <ItemGroup>
     <ClInclude Include="ASM\MgAsmCom.h" />
     <ClInclude Include="ASM\MgAsmComDef.h" />
+    <ClInclude Include="astarlib.h" />
+    <ClInclude Include="blockallocator.h" />
+    <ClInclude Include="cdraw.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="TInputBox.h" />
     <ClInclude Include="TJson.h" />
@@ -263,6 +266,8 @@
     <ClCompile Include="ASM\MgAsmCom.cpp" />
     <ClCompile Include="ASM\MgDisasm.cpp" />
     <ClCompile Include="ASM\MgDisasmBase.cpp" />
+    <ClCompile Include="astarlib.cpp" />
+    <ClCompile Include="blockallocator.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="TInputBox.cpp" />
     <ClCompile Include="TJson.cpp" />

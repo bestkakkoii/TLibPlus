@@ -81,6 +81,15 @@
     <ClInclude Include="ASM\MgAsmComDef.h">
       <Filter>Asm</Filter>
     </ClInclude>
+    <ClInclude Include="astarlib.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="blockallocator.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="cdraw.hpp">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TLibPlus.cpp">
@@ -130,6 +139,12 @@
     </ClCompile>
     <ClCompile Include="ASM\MgDisasmBase.cpp">
       <Filter>Asm</Filter>
+    </ClCompile>
+    <ClCompile Include="astarlib.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="blockallocator.cpp">
+      <Filter>Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
